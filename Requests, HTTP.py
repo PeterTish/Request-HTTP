@@ -2,12 +2,12 @@ import requests
 from pprint import pprint
 # Task №1 Поиск самого умного супергероя
 
-token = 2619421814940190
+
 
 
 def search_superhero():
+    '''Функция обращается к сайту, возвращает список json файл каждого супергероя из запроса'''
     superhero_list = []
-
 
     hulk = 'https://superheroapi.com/api/2619421814940190/search/Hulk'
     captain_america = 'https://superheroapi.com/api/2619421814940190/search/Captain America'
@@ -30,10 +30,14 @@ def search_superhero():
     superhero_list.append(json_thanos['results'])
     return superhero_list
 
-# if __name__ == '__main__':
-#     search_superhero()
 
-def smartest_superhero(function):
+
+def smartest_superhero(search_superhero):
+    '''
+    Функция принимает функцию search_superhero (json файл каждого супергероя из запроса),
+    составляет словарь имя : интеллект, словарь добавляется в список, список сортируется
+    по возрастанию по величине интеллекта супергероя
+    '''
     intelligence_dict = {}
     intelligence_list = []
     sorted_list = []
@@ -54,36 +58,56 @@ def smartest_superhero(function):
 #     print(smartest_superhero(search_superhero))
 
 
-# Task №2 Поиск самого умного супергероя
+
+
+
+# Task №2 Добавление файла на Яндекс Диск
+
+import yadisk
+
+# y = yadisk.YaDisk(token='')
+# y.upload('Test.docx', '/Test.docx')
 
 class YaUploader:
     def __init__(self, token: str):
         self.token = token
 
-    def upload(self, file_path: str):
+    def get_headers(self):
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': f'OAuth {self.token}'
+        }
+
+    def get_upload_link(self, disk_file_path):
+        upload_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
+        headers = self.get_headers()
+        params = {"path": disk_file_path, "overwrite": "true"}
+        response = requests.get(upload_url, headers=headers, params=params)
+        pprint(response.json())
+        return response.json()
+
+    def upload_file(self, file_path: str):
         """Метод загружает файлы по списку file_list на яндекс диск"""
-        # Тут ваша логика
-        # Функция может ничего не возвращать
+        href = self.get_upload_link(disk_file_path=path_to_file).get("href", "")
+        response = requests.put(href, data=open(file_name, 'rb'))
+        response.raise_for_status()
+        if response.status_code == 201:
+            print("Success")
 
-
-if __name__ == '__main__':
-    # Получить путь к загружаемому файлу и токен от пользователя
-    path_to_file = ...
-    token = ...
-    uploader = YaUploader(token)
-    result = uploader.upload(path_to_file)
-
-
-
-
-
+# if __name__ == '__main__':
+#     file_name = 'Test.docx'
+#     path_to_file = 'Test.docx'
+#     token = 'AQAAAABesawkAADLW4fcGKQ07URMrcKMoc7ae-E'
+#     uploader = YaUploader(token)
+#     result = uploader.upload_file(path_to_file)
 
 
 
+# Task №3 Все вопросы за 2 дня по тэг Python
+
+url = 'https://stackoverflow.com/'
+params_dict = {'tag' : 'Python', 'date' : {'start' : '2022-03-28', 'end' : '2022-03-29'}}
 
 
-
-
-
-
-
+response = requests.get(url, params=params_dict)
+pprint(response.json())
