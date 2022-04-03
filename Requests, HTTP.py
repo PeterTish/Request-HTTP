@@ -1,12 +1,10 @@
 import requests
 from pprint import pprint
+
+
 # Task №1 Поиск самого умного супергероя
-
-
-
-
 def search_superhero():
-    '''Функция обращается к сайту, возвращает список json файл каждого супергероя из запроса'''
+    '''Функция обращается к сайту, возвращает список (json файл каждого супергероя из запроса)'''
     superhero_list = []
 
     hulk = 'https://superheroapi.com/api/2619421814940190/search/Hulk'
@@ -103,11 +101,13 @@ class YaUploader:
 
 
 
+# /2.3/questions?fromdate=1648425600&todate=1648598400&order=desc&sort=activity&tagged=python&site=stackoverflow
 # Task №3 Все вопросы за 2 дня по тэг Python
+import json
 
-url = 'https://stackoverflow.com/'
-params_dict = {'tag' : 'Python', 'date' : {'start' : '2022-03-28', 'end' : '2022-03-29'}}
-
+url = 'https://api.stackexchange.com/2.3/questions'
+params_dict = {'fromdate':1648425600, 'todate':1648598400, 'order':'desc', 'sort':'activity', 'tagged' : 'python', 'site':'stackoverflow'}
 
 response = requests.get(url, params=params_dict)
 pprint(response.json())
+
