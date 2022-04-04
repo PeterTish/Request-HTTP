@@ -95,7 +95,7 @@ class YaUploader:
 # if __name__ == '__main__':
 #     file_name = 'Test.docx'
 #     path_to_file = 'Test.docx'
-#     token = 'AQAAAABesawkAADLW4fcGKQ07URMrcKMoc7ae-E'
+#     token = ''
 #     uploader = YaUploader(token)
 #     result = uploader.upload_file(path_to_file)
 
